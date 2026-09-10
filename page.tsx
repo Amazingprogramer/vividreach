@@ -1,38 +1,91 @@
-'use client'
+'use client';
 
-import { useState } from 'react'
-import { SiteHeader, type ViewId } from '@/components/site-header'
-import { SiteFooter } from '@/components/site-footer'
-import { HomeView } from '@/components/views/home-view'
-import { ServicesView } from '@/components/views/services-view'
-import { CaseStudiesView } from '@/components/views/case-studies-view'
-import { ContactView } from '@/components/views/contact-view'
+import { useState } from 'react';
 
-export default function Page() {
-  const [view, setView] = useState<ViewId>('home')
+export function ContactView() {
+  const [result, setResult] = useState("");
+
+  const onSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
+    event.preventDefault();
+    setResult("Sending...");
+
+    const formData = new FormData(event.currentTarget);
+    // Your Web3Forms Access Key
+    formData.append("access_key", "b6c70ab3-7883-49fb-8b5d-8be94258a4c2");
+
+    const response = await fetch("https://api.web3forms.com/submit", {
+      method: "POST",
+      body: formData
+    });
+
+    const data = await response.json();
+
+    if (data.success) {
+      setResult("Success! Your message has been sent.");
+      event.currentTarget.reset();
+    } else {
+      console.log("Error", data);
+      setResult(data.message || "Something went wrong. Please try again.");
+    }
+  };
 
   return (
-    <div className="relative min-h-screen overflow-x-hidden">
-      {/* ambient background glow */}
-      <div aria-hidden className="pointer-events-none fixed inset-0 -z-10">
-        <div className="absolute -top-40 -left-40 h-[32rem] w-[32rem] rounded-full bg-neon/20 blur-[120px]" />
-        <div className="absolute top-1/3 -right-40 h-[32rem] w-[32rem] rounded-full bg-cyan/15 blur-[120px]" />
-        <div className="absolute bottom-0 left-1/4 h-[24rem] w-[24rem] rounded-full bg-neon/10 blur-[120px]" />
-      </div>
-
-      <SiteHeader view={view} onNavigate={setView} />
-
-      <main className="mx-auto w-full max-w-6xl px-5 pb-24 pt-28 sm:px-8">
-        {/* key forces remount so the fade-in replays on every view change */}
-        <div key={view} className="animate-fade-up">
-          {view === 'home' && <HomeView onNavigate={setView} />}
-          {view === 'services' && <ServicesView />}
-          {view === 'proof' && <CaseStudiesView />}
-          {view === 'contact' && <ContactView />}
+    <div className="contact-container">
+      {/* Keep your existing header/layout text here */}
+      
+      <form onSubmit={onSubmit} className="space-y-4">
+        <div>
+          <label className="block text-sm font-medium text-gray-300">Name</label>
+          <input 
+            type="text" 
+            name="name" 
+            placeholder="Jane Doe" 
+            required 
+            className="w-full mt-1 p-3 bg-[#111] border border-gray-800 rounded-lg text-white"
+          />
         </div>
-      </main>
 
-      <SiteFooter onNavigate={setView} />
+        <div>
+          <label className="block text-sm font-medium text-gray-300">Email</label>
+          <input 
+            type="email" 
+            name="email" 
+            placeholder="jane@company.com" 
+            required 
+            className="w-full mt-1 p-3 bg-[#111] border border-gray-800 rounded-lg text-white"
+          />
+        </div>
+
+        <div>
+          <label className="block text-sm font-medium text-gray-300">Website</label>
+          <input 
+            type="text" 
+            name="website" 
+            placeholder="https://yourbrand.com" 
+            className="w-full mt-1 p-3 bg-[#111] border border-gray-800 rounded-lg text-white"
+          />
+        </div>
+
+        <div>
+          <label className="block text-sm font-medium text-gray-300">Message</label>
+          <textarea 
+            name="message" 
+            placeholder="What are you trying to achieve?" 
+            required 
+            rows={4}
+            className="w-full mt-1 p-3 bg-[#111] border border-gray-800 rounded-lg text-white"
+          />
+        </div>
+
+        <button 
+          type="submit" 
+          className="w-full py-3 bg-gradient-to-r from-purple-500 to-cyan-400 text-white font-medium rounded-lg"
+        >
+          Send message 🚀
+        </button>
+
+        {result && <p className="text-white mt-4 text-center">{result}</p>}
+      </form>
     </div>
-  )
+  );
 }
