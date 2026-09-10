@@ -30,9 +30,7 @@ export function ContactView() {
   };
 
   return (
-    <div className="contact-container">
-      {/* Keep your existing header/layout text here */}
-      
+    <div className="w-full max-w-xl mx-auto p-6">
       <form onSubmit={onSubmit} className="space-y-4">
         <div>
           <label className="block text-sm font-medium text-gray-300">Name</label>
