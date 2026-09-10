@@ -1,37 +1,10 @@
-'use client';
-
-import { useState } from 'react';
-
 export function ContactView() {
-  const [result, setResult] = useState("");
-
-  const onSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
-    event.preventDefault();
-    setResult("Sending...");
-
-    const formData = new FormData(event.currentTarget);
-    // Your Web3Forms Access Key
-    formData.append("access_key", "b6c70ab3-7883-49fb-8b5d-8be94258a4c2");
-
-    const response = await fetch("https://api.web3forms.com/submit", {
-      method: "POST",
-      body: formData
-    });
-
-    const data = await response.json();
-
-    if (data.success) {
-      setResult("Success! Your message has been sent.");
-      event.currentTarget.reset();
-    } else {
-      console.log("Error", data);
-      setResult(data.message || "Something went wrong. Please try again.");
-    }
-  };
-
   return (
     <div className="w-full max-w-xl mx-auto p-6">
-      <form onSubmit={onSubmit} className="space-y-4">
+      <form action="https://api.web3forms.com/submit" method="POST" className="space-y-4">
+        {/* Replace with your actual Web3Forms Access Key */}
+        <input type="hidden" name="access_key" value="b6c70ab3-7883-49fb-8b5d-8be94258a4c2" />
+
         <div>
           <label className="block text-sm font-medium text-gray-300">Name</label>
           <input 
@@ -81,8 +54,6 @@ export function ContactView() {
         >
           Send message 🚀
         </button>
-
-        {result && <p className="text-white mt-4 text-center">{result}</p>}
       </form>
     </div>
   );
