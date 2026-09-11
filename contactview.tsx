@@ -7,7 +7,7 @@ export function ContactView() {
 
   const onSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
-    console.log("👉 FORM SUBMITTED SUCCESSFULLY!"); // Test log to verify click handler runs
+    console.log("👉 FORM SUBMITTED SUCCESSFULLY!");
     setResult("Sending...");
 
     const formData = new FormData(event.currentTarget);
@@ -84,7 +84,8 @@ export function ContactView() {
 
         <button 
           type="submit" 
-          className="w-full py-3 bg-gradient-to-r from-purple-500 to-cyan-400 text-white font-medium rounded-lg"
+          onClick={() => alert("BUTTON WAS CLICKED!")}
+          className="w-full py-3 bg-gradient-to-r from-purple-500 to-cyan-400 text-white font-medium rounded-lg relative z-50 cursor-pointer"
         >
           Send message 🚀
         </button>
