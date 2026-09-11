@@ -10,7 +10,49 @@ const FIELDS = [
 ] as const
 
 export function ContactView() {
-  const [sent, setSent] = useState(false)
+  const [result, setResult] = useState<string | null>(null)
+  const [isSending, setIsSending] = useState(false)
+
+  const onSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
+    event.preventDefault()
+    setIsSending(true)
+    setResult("Sending...")
+
+    const formData = new FormData(event.currentTarget)
+    // Your correct Web3Forms access key
+    formData.append("access_key", "1f991dfe-9405-4346-8529-8d322144e0a6")
+
+    const object = Object.fromEntries(formData)
+    const json = JSON.stringify(object)
+
+    try {
+      const response = await fetch("https://api.web3forms.com/submit", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          Accept: "application/json"
+        },
+        body: json
+      })
+
+      const data = await response.json()
+
+      if (data.success) {
+        setResult("Success! Your message has been sent.")
+        event.currentTarget.reset()
+      } else {
+        console.log("Error", data)
+        setResult(data.message || "Something went wrong. Please try again.")
+        setIsSending(false)
+      }
+    } catch (err) {
+      console.log("Error", err)
+      setResult("Something went wrong. Please try again.")
+      setIsSending(false)
+    }
+  }
+
+  const isSuccess = result?.includes('Success')
 
   return (
     <div className="grid items-start gap-10 lg:grid-cols-[1fr_1.2fr]">
@@ -40,10 +82,7 @@ export function ContactView() {
       </div>
 
       <form
-        onSubmit={(e) => {
-          e.preventDefault()
-          setSent(true)
-        }}
+        onSubmit={onSubmit}
         className="glass flex flex-col gap-5 rounded-2xl p-6 sm:p-8"
       >
         {FIELDS.map((f) => (
@@ -77,21 +116,27 @@ export function ContactView() {
 
         <button
           type="submit"
-          disabled={sent}
+          disabled={isSuccess}
           className="group inline-flex items-center justify-center gap-2 rounded-xl bg-gradient-to-r from-neon to-cyan px-6 py-3.5 text-sm font-semibold text-primary-foreground glow-neon transition-transform duration-200 hover:scale-[1.02] disabled:opacity-80"
         >
-          {sent ? (
+          {isSuccess ? (
             <>
               <CheckCircle2 className="h-4 w-4" />
               Message sent
             </>
           ) : (
             <>
-              Send message
+              {isSending ? "Sending..." : "Send message"}
               <Send className="h-4 w-4 transition-transform duration-200 group-hover:translate-x-0.5" />
             </>
           )}
         </button>
+
+        {result && (
+          <p className={`text-sm text-center ${isSuccess ? 'text-green-400' : 'text-muted-foreground'}`}>
+            {result}
+          </p>
+        )}
       </form>
     </div>
   )
