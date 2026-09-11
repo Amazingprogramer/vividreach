@@ -7,10 +7,10 @@ export function ContactView() {
 
   const onSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
+    console.log("👉 FORM SUBMITTED SUCCESSFULLY!"); // Test log to verify click handler runs
     setResult("Sending...");
 
     const formData = new FormData(event.currentTarget);
-    // Here is your correct access key!
     formData.append("access_key", "1f991dfe-9405-4346-8529-8d322144e0a6");
 
     const object = Object.fromEntries(formData);
