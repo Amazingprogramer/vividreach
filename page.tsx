@@ -1,12 +1,12 @@
 'use client'
 
 import { useState } from 'react'
-import { SiteHeader, type ViewId } from '@/components/site-header'
-import { SiteFooter } from '@/components/site-footer'
-import { HomeView } from '@/components/views/home-view'
-import { ServicesView } from '@/components/views/services-view'
-import { CaseStudiesView } from '@/components/views/case-studies-view'
-import { ContactView } from '@/components/views/contact-view'
+import { SiteHeader, type ViewId } from './site-header'
+import { SiteFooter } from './site-footer'
+import { HomeView } from './vivid-reach/home-view'
+import { ServicesView } from './vivid-reach/services-view'
+import { CaseStudiesView } from './vivid-reach/case-studies-view'
+import { ContactView } from './contact-view'
 
 export default function Page() {
   const [view, setView] = useState<ViewId>('home')
