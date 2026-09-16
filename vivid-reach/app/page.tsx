@@ -1,38 +1,46 @@
-'use client'
+import Link from 'next/link';
 
-import { useState } from 'react'
-import { SiteHeader, type ViewId } from '@/components/site-header'
-import { SiteFooter } from '@/components/site-footer'
-import { HomeView } from '@/components/views/home-view'
-import { ServicesView } from '@/components/views/services-view'
-import { CaseStudiesView } from '@/components/views/case-studies-view'
-import { ContactView } from '@/components/views/contact-view'
-
-export default function Page() {
-  const [view, setView] = useState<ViewId>('home')
-
+export default function HomePage() {
   return (
-    <div className="relative min-h-screen overflow-x-hidden">
-      {/* ambient background glow */}
-      <div aria-hidden className="pointer-events-none fixed inset-0 -z-10">
-        <div className="absolute -top-40 -left-40 h-[32rem] w-[32rem] rounded-full bg-neon/20 blur-[120px]" />
-        <div className="absolute top-1/3 -right-40 h-[32rem] w-[32rem] rounded-full bg-cyan/15 blur-[120px]" />
-        <div className="absolute bottom-0 left-1/4 h-[24rem] w-[24rem] rounded-full bg-neon/10 blur-[120px]" />
-      </div>
-
-      <SiteHeader view={view} onNavigate={setView} />
-
-      <main className="mx-auto w-full max-w-6xl px-5 pb-24 pt-28 sm:px-8">
-        {/* key forces remount so the fade-in replays on every view change */}
-        <div key={view} className="animate-fade-up">
-          {view === 'home' && <HomeView onNavigate={setView} />}
-          {view === 'services' && <ServicesView />}
-          {view === 'proof' && <CaseStudiesView />}
-          {view === 'contact' && <ContactView />}
+    <div className="bg-[#0b0d17] text-white min-h-screen">
+      {/* Hero Section */}
+      <section className="py-24 px-6 text-center max-w-4xl mx-auto">
+        <span className="text-xs bg-[#1f293d] text-[#3b82f6] px-3 py-1 rounded-full border border-[#2563eb]/30">
+          • Proprietary Core Engine — Engineered 100% In-House
+        </span>
+        <h1 className="text-5xl font-extrabold mt-6 mb-4 leading-tight">
+          Marketing Precision, Powered by Proprietary AI.
+        </h1>
+        <p className="text-[#9ca3af] text-lg mb-8">
+          We didn't license a generic model. We engineered VividReach from the ground up to turn raw market data into superhuman campaign performance.
+        </p>
+        <div className="flex justify-center gap-4">
+          <Link href="/aidemo" className="bg-gradient-to-r from-blue-600 to-indigo-600 text-white font-bold px-6 py-3 rounded-xl hover:opacity-90 transition">
+            ✨ Test the AI Console
+          </Link>
+          <Link href="/about" className="bg-[#111827] border border-[#1f293d] text-white px-6 py-3 rounded-xl hover:border-blue-500 transition">
+            Explore Engine Architecture
+          </Link>
         </div>
-      </main>
+      </section>
 
-      <SiteFooter onNavigate={setView} />
+      {/* Advantage Summary */}
+      <section className="py-16 px-6 max-w-7xl mx-auto border-t border-[#1f293d]">
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
+          <div className="bg-[#111827] p-6 rounded-xl border border-[#1f293d]">
+            <h3 className="text-xl font-bold mb-2">Humans Sleep. Our Engine Doesn't.</h3>
+            <p className="text-[#9ca3af] text-sm">VividReach shifts ad spend automatically at 2 AM based on live market momentum.</p>
+          </div>
+          <div className="bg-[#111827] p-6 rounded-xl border border-[#1f293d]">
+            <h3 className="text-xl font-bold mb-2">Data, Not Guesses.</h3>
+            <p className="text-[#9ca3af] text-sm">Cold, statistically-grounded decisions trained strictly on conversion telemetry.</p>
+          </div>
+          <div className="bg-[#111827] p-6 rounded-xl border border-[#1f293d]">
+            <h3 className="text-xl font-bold mb-2">Cross-Channel Mastery.</h3>
+            <p className="text-[#9ca3af] text-sm">Search, social, and display modeled as one connected ecosystem simultaneously.</p>
+          </div>
+        </div>
+      </section>
     </div>
-  )
+  );
 }
